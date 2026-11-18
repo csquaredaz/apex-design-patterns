@@ -69,24 +69,24 @@ Requires the Salesforce CLI and a Dev Hub set as the default (`sf config set tar
 
 Open a pattern's card, read "Don't use it when" first, then the code and its test. The catalog:
 
-| Family     | Pattern                                           | The problem it solves here                                      | Status |
-| ---------- | ------------------------------------------------- | --------------------------------------------------------------- | ------ |
-| creational | [Builder](force-app/creational/builder/README.md) | A valid, immutable shipment request without a 7-arg constructor | Done   |
-| creational | Factory (`Type.forName` + Custom Metadata)        | A carrier client chosen by configuration                        | PR 2   |
-| creational | Singleton (transaction-scoped)                    | Settings loaded once per transaction, and why not "globally"    | PR 2   |
-| structural | Adapter                                           | A carrier's tracking payload mapped to our model                | PR 2   |
-| structural | Decorator                                         | Surcharges stacked on a base shipping cost                      | PR 2   |
-| structural | Composite                                         | Bundles of order lines priced as one                            | PR 2   |
-| structural | Facade                                            | One checkout call over pricing, stock and booking               | PR 2   |
-| behavioral | Strategy                                          | Rate shopping across carriers                                   | PR 3   |
-| behavioral | Template Method                                   | An order export with fixed steps and variable formatting        | PR 3   |
-| behavioral | Chain of Responsibility                           | Order checks that can stop the chain                            | PR 3   |
-| behavioral | Observer                                          | In-transaction listeners on "order shipped"                     | PR 3   |
-| behavioral | State                                             | A fulfilment lifecycle that rejects illegal transitions         | PR 3   |
-| behavioral | Command                                           | Queued, undoable shipment operations                            | PR 3   |
-| eip        | Content-Based Router                              | Tracking events routed by carrier                               | PR 4   |
-| eip        | Splitter + Aggregator                             | An order split per warehouse, then reassembled                  | PR 4   |
-| eip        | Publish-Subscribe Channel                         | `Order_Shipped_Event__e` and a trigger subscriber               | PR 4   |
+| Family     | Pattern                                                                              | The problem it solves here                                      | Status |
+| ---------- | ------------------------------------------------------------------------------------ | --------------------------------------------------------------- | ------ |
+| creational | [Builder](force-app/creational/builder/README.md)                                    | A valid, immutable shipment request without a 7-arg constructor | Done   |
+| creational | [Factory (`Type.forName` + Custom Metadata)](force-app/creational/factory/README.md) | A carrier client chosen by configuration                        | Done   |
+| creational | [Singleton (transaction-scoped)](force-app/creational/singleton/README.md)           | Settings loaded once per transaction, and why not "globally"    | Done   |
+| structural | [Adapter](force-app/structural/adapter/README.md)                                    | A carrier's tracking payload mapped to our model                | Done   |
+| structural | [Decorator](force-app/structural/decorator/README.md)                                | Surcharges stacked on a base shipping cost                      | Done   |
+| structural | [Composite](force-app/structural/composite/README.md)                                | Bundles of order lines priced as one                            | Done   |
+| structural | [Facade](force-app/structural/facade/README.md)                                      | One checkout call over pricing, stock and booking               | Done   |
+| behavioral | Strategy                                                                             | Rate shopping across carriers                                   | PR 3   |
+| behavioral | Template Method                                                                      | An order export with fixed steps and variable formatting        | PR 3   |
+| behavioral | Chain of Responsibility                                                              | Order checks that can stop the chain                            | PR 3   |
+| behavioral | Observer                                                                             | In-transaction listeners on "order shipped"                     | PR 3   |
+| behavioral | State                                                                                | A fulfilment lifecycle that rejects illegal transitions         | PR 3   |
+| behavioral | Command                                                                              | Queued, undoable shipment operations                            | PR 3   |
+| eip        | Content-Based Router                                                                 | Tracking events routed by carrier                               | PR 4   |
+| eip        | Splitter + Aggregator                                                                | An order split per warehouse, then reassembled                  | PR 4   |
+| eip        | Publish-Subscribe Channel                                                            | `Order_Shipped_Event__e` and a trigger subscriber               | PR 4   |
 
 ```apex
 ShipmentRequest request = ShipmentRequest.builder()

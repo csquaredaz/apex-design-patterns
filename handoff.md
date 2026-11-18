@@ -41,3 +41,9 @@ PR 4 also adds:
 - Dev org: `adp-dev`, created 2026-11-18 for 30 days, with no permission sets assigned. Iterate with `sf project deploy start --source-dir force-app --target-org adp-dev`, then `npm run org:test -- adp-dev`.
 - **Probe before PR 4:** a Platform Event trigger runs as the Automated Process user. Check that it can insert a Task on an Order with no permission set. `apex-event-ingestion` proved updating Orders, but not Tasks.
 - Inner classes can call the outer class's `private` constructor (proven by the Builder deploy). Use that wherever a pattern needs a guarded constructor.
+- PR 2 findings:
+  - `inner` and `outer` are reserved identifiers. The decorator field is `wrapped`.
+  - `Type.isAssignableFrom` works at API 68.0. Check the type before `newInstance()`.
+  - Enum and empty exception classes get zero-line coverage rows, so the CI gate doesn't count them as missing (replayed locally).
+  - `System.StubProvider.handleMethodCall` and four-field value-object constructors trip `ExcessiveParameterList` (Moderate). Suppress them with a reason in the code.
+- Local gate replay: `scratchpad/ci-gate-replay.sh <alias>` repeats `ci.yml`'s test step and gate. The scratchpad may be cleared; rebuild the script from `ci.yml` if it's gone.
