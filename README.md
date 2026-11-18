@@ -78,12 +78,12 @@ Open a pattern's card, read "Don't use it when" first, then the code and its tes
 | structural | [Decorator](force-app/structural/decorator/README.md)                                | Surcharges stacked on a base shipping cost                      | Done   |
 | structural | [Composite](force-app/structural/composite/README.md)                                | Bundles of order lines priced as one                            | Done   |
 | structural | [Facade](force-app/structural/facade/README.md)                                      | One checkout call over pricing, stock and booking               | Done   |
-| behavioral | Strategy                                                                             | Rate shopping across carriers                                   | PR 3   |
-| behavioral | Template Method                                                                      | An order export with fixed steps and variable formatting        | PR 3   |
-| behavioral | Chain of Responsibility                                                              | Order checks that can stop the chain                            | PR 3   |
-| behavioral | Observer                                                                             | In-transaction listeners on "order shipped"                     | PR 3   |
-| behavioral | State                                                                                | A fulfilment lifecycle that rejects illegal transitions         | PR 3   |
-| behavioral | Command                                                                              | Queued, undoable shipment operations                            | PR 3   |
+| behavioral | [Strategy](force-app/behavioral/strategy/README.md)                                  | Rate shopping across carriers                                   | Done   |
+| behavioral | [Template Method](force-app/behavioral/template-method/README.md)                    | An order export with fixed steps and variable formatting        | Done   |
+| behavioral | [Chain of Responsibility](force-app/behavioral/chain-of-responsibility/README.md)    | Order checks that can stop the chain                            | Done   |
+| behavioral | [Observer](force-app/behavioral/observer/README.md)                                  | In-transaction listeners on "order shipped"                     | Done   |
+| behavioral | [State](force-app/behavioral/state/README.md)                                        | A fulfilment lifecycle that rejects illegal transitions         | Done   |
+| behavioral | [Command](force-app/behavioral/command/README.md)                                    | Queued, undoable shipment operations                            | Done   |
 | eip        | Content-Based Router                                                                 | Tracking events routed by carrier                               | PR 4   |
 | eip        | Splitter + Aggregator                                                                | An order split per warehouse, then reassembled                  | PR 4   |
 | eip        | Publish-Subscribe Channel                                                            | `Order_Shipped_Event__e` and a trigger subscriber               | PR 4   |
