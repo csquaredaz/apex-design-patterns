@@ -1,6 +1,6 @@
 # Handoff: apex-design-patterns
 
-Last updated: 2026-11-18 · Phase: PR 4 of 4 (`feat/eip-and-docs`) in review. After it merges: tag `v1.0.0`, then go public.
+Last updated: 2026-11-18 · Phase: built and released (`v1.0.0`). Only going public is left.
 
 ## Done
 
@@ -14,15 +14,22 @@ Last updated: 2026-11-18 · Phase: PR 4 of 4 (`feat/eip-and-docs`) in review. Af
 - **PR #1 merged 2026-11-18 as `b54dccf`.** Ready run 44349240178: `SKIP_PERMSETS` path, 6/6 `ShipmentRequestTest`, 100% own-class coverage, org deleted, artifact scrubbed. The `main` run 44350110331 reused it (scratch-org job skipped) and published the 100% badge.
 - **PR #2 merged 2026-11-18 as `010707b`:** Factory, Singleton, Adapter, Decorator, Composite, Facade. Ready run 44353254138: 35/35 from 7 test classes, 100%. The `main` run 44354403374 reused it.
 - **PR #3 merged 2026-11-18 as `65a96e9`:** Strategy, Template Method, Chain of Responsibility, Observer, State, Command. Ready run 44357229796: 67/67 from 13 test classes, 100%. The `main` run 44357988813 reused it. Renamed for reserved words: `andThen`, `render`, `bestQuote`.
-- **PR 4 `feat/eip-and-docs`:** Content-Based Router, Splitter + Aggregator, Publish-Subscribe, with cards; README link-only rows, PoEAA row and omitted-patterns table; "Built with Claude Code" example; `docs/case-study.md`; CHANGELOG `## 1.0.0`. Local gate replay in `adp-dev`: 86/86 from 17 test classes, 100% on 49 own classes. Code Analyzer 0 High, 0 Moderate. Five targeted mutants all killed. Chad approved every design call (R1–R2, S1–S4, P1–P4, the tag). One change from the approved signatures: `OrderShippedSubscriber.handle` returns the number of Tasks written.
+- **PR #4 merged 2026-11-18 as `c4f78ab`:** ready run 44362368929 (86/86 from 17 test classes, 100%); the `main` run 44363240923 reused it and published the 100% badge.
+- **`v1.0.0` released 2026-11-18:** an annotated tag on `c4f78ab` and a plain GitHub release, with the CHANGELOG `## 1.0.0` section plus a source-only line as notes. No workflow runs on tags.
+- **PR 4 `feat/eip-and-docs` contents:** Content-Based Router, Splitter + Aggregator, Publish-Subscribe, with cards; README link-only rows, PoEAA row and omitted-patterns table; "Built with Claude Code" example; `docs/case-study.md`; CHANGELOG `## 1.0.0`. Local gate replay in `adp-dev`: 86/86 from 17 test classes, 100% on 49 own classes. Code Analyzer 0 High, 0 Moderate. Five targeted mutants all killed. Chad approved every design call (R1–R2, S1–S4, P1–P4, the tag). One change from the approved signatures: `OrderShippedSubscriber.handle` returns the number of Tasks written.
 
 ## Next
 
-1. Chad merges PR 4 in the GitHub UI; confirm the `main` run reuses the PR's scratch-org result.
-2. **Tag `v1.0.0`** on `main` and create a plain GitHub release with the CHANGELOG `## 1.0.0` section as notes (source-only, no package). Chad OKs the exact `git tag` / `gh release create` commands first.
-3. **Go public** with the approved gated sequence: fix any leak sources first, delete old CI runs, scan the remaining logs and PR text, then Chad flips visibility.
+**Go public** with the approved gated sequence:
 
-All four PRs of the plan are done once PR 4 merges:
+1. Scan every CI run's logs and artifacts, the PR titles, bodies and comments, commit messages, the release notes and the tree for org Ids, usernames, instance URLs, non-noreply emails and employer or client names.
+2. If anything leaks, fix the source in a PR first, then delete the affected runs once Chad OKs it.
+3. Chad flips visibility. Then check the public README, the badges and the cross-links to A, B and C.
+4. Open this branch (`docs/handoff-public`) as a small docs PR, extended with the going-public result, and update the workspace CLAUDE.md and memory.
+
+The remote branch `feat/eip-and-docs` is merged; delete it only when Chad asks.
+
+All four PRs of the plan are merged:
 
 | PR  | Branch                       | Contents                                                                                                |
 | --- | ---------------------------- | ------------------------------------------------------------------------------------------------------- |
