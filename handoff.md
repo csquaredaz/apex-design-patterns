@@ -1,6 +1,6 @@
 # Handoff: apex-design-patterns
 
-Last updated: 2026-11-18 · Phase: PR 2 of 4 (`feat/creational-structural`).
+Last updated: 2026-11-18 · Phase: PR 3 of 4 (`feat/behavioral`).
 
 ## Done
 
@@ -12,6 +12,7 @@ Last updated: 2026-11-18 · Phase: PR 2 of 4 (`feat/creational-structural`).
 - Repository scaffolded by hand from `apex-standards:sf-repo-scaffold` at E `6202ac1`, which includes E PR #11's `SKIP_PERMSETS` back-port. The skill is user-invoked only. Step 8 applied: no `release.yml`, no `changelog-section.sh`, no package keys.
 - Builder (`ShipmentRequest` with an inner `Builder`) is the reference card. It's in PR 1 so CI deploys real metadata and proves the test path from the first PR.
 - **PR #1 merged 2026-11-18 as `b54dccf`.** Ready run 44349240178: `SKIP_PERMSETS` path, 6/6 `ShipmentRequestTest`, 100% own-class coverage, org deleted, artifact scrubbed. The `main` run 44350110331 reused it (scratch-org job skipped) and published the 100% badge.
+- **PR #2 merged 2026-11-18 as `010707b`:** Factory, Singleton, Adapter, Decorator, Composite, Facade. Ready run 44353254138: 35/35 from 7 test classes, 100%. The `main` run 44354403374 reused it.
 
 ## Next
 
@@ -46,4 +47,8 @@ PR 4 also adds:
   - `Type.isAssignableFrom` works at API 68.0. Check the type before `newInstance()`.
   - Enum and empty exception classes get zero-line coverage rows, so the CI gate doesn't count them as missing (replayed locally).
   - `System.StubProvider.handleMethodCall` and four-field value-object constructors trip `ExcessiveParameterList` (Moderate). Suppress them with a reason in the code.
+- PR 3 findings:
+  - More reserved identifiers: `then`, `export` and `select` (renamed to `andThen`, `render` and `bestQuote`). A parameter named `order` shadows the `Order` SObject; use `owner` or `row`.
+  - Abstract, virtual and override methods need an explicit access modifier, even in a private inner class.
+  - A test's inner class can extend a top-level abstract class and override its `protected` hooks.
 - Local gate replay: `scratchpad/ci-gate-replay.sh <alias>` repeats `ci.yml`'s test step and gate. The scratchpad may be cleared; rebuild the script from `ci.yml` if it's gone.
