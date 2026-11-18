@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+  <description
+  >Lets a user publish Order_Shipped_Event__e through OrderShippedPublisher. EventBus.publish checks Create on the event for the running user, even from Apex, and Create needs Read.</description>
+  <hasActivationRequired>false</hasActivationRequired>
+  <label>Order Event Publisher</label>
+  <objectPermissions>
+    <allowCreate>true</allowCreate>
+    <allowDelete>false</allowDelete>
+    <allowEdit>false</allowEdit>
+    <allowRead>true</allowRead>
+    <modifyAllRecords>false</modifyAllRecords>
+    <object>Order_Shipped_Event__e</object>
+    <viewAllRecords>false</viewAllRecords>
+  </objectPermissions>
+</PermissionSet>

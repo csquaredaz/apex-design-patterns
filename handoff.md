@@ -1,6 +1,6 @@
 # Handoff: apex-design-patterns
 
-Last updated: 2026-11-18 · Phase: PR 3 of 4 (`feat/behavioral`).
+Last updated: 2026-11-18 · Phase: PR 4 of 4 (`feat/eip-and-docs`) in review. After it merges: tag `v1.0.0`, then go public.
 
 ## Done
 
@@ -13,8 +13,16 @@ Last updated: 2026-11-18 · Phase: PR 3 of 4 (`feat/behavioral`).
 - Builder (`ShipmentRequest` with an inner `Builder`) is the reference card. It's in PR 1 so CI deploys real metadata and proves the test path from the first PR.
 - **PR #1 merged 2026-11-18 as `b54dccf`.** Ready run 44349240178: `SKIP_PERMSETS` path, 6/6 `ShipmentRequestTest`, 100% own-class coverage, org deleted, artifact scrubbed. The `main` run 44350110331 reused it (scratch-org job skipped) and published the 100% badge.
 - **PR #2 merged 2026-11-18 as `010707b`:** Factory, Singleton, Adapter, Decorator, Composite, Facade. Ready run 44353254138: 35/35 from 7 test classes, 100%. The `main` run 44354403374 reused it.
+- **PR #3 merged 2026-11-18 as `65a96e9`:** Strategy, Template Method, Chain of Responsibility, Observer, State, Command. Ready run 44357229796: 67/67 from 13 test classes, 100%. The `main` run 44357988813 reused it. Renamed for reserved words: `andThen`, `render`, `bestQuote`.
+- **PR 4 `feat/eip-and-docs`:** Content-Based Router, Splitter + Aggregator, Publish-Subscribe, with cards; README link-only rows, PoEAA row and omitted-patterns table; "Built with Claude Code" example; `docs/case-study.md`; CHANGELOG `## 1.0.0`. Local gate replay in `adp-dev`: 86/86 from 17 test classes, 100% on 49 own classes. Code Analyzer 0 High, 0 Moderate. Five targeted mutants all killed. Chad approved every design call (R1–R2, S1–S4, P1–P4, the tag). One change from the approved signatures: `OrderShippedSubscriber.handle` returns the number of Tasks written.
 
 ## Next
+
+1. Chad merges PR 4 in the GitHub UI; confirm the `main` run reuses the PR's scratch-org result.
+2. **Tag `v1.0.0`** on `main` and create a plain GitHub release with the CHANGELOG `## 1.0.0` section as notes (source-only, no package). Chad OKs the exact `git tag` / `gh release create` commands first.
+3. **Go public** with the approved gated sequence: fix any leak sources first, delete old CI runs, scan the remaining logs and PR text, then Chad flips visibility.
+
+All four PRs of the plan are done once PR 4 merges:
 
 | PR  | Branch                       | Contents                                                                                                |
 | --- | ---------------------------- | ------------------------------------------------------------------------------------------------------- |
@@ -23,24 +31,14 @@ Last updated: 2026-11-18 · Phase: PR 3 of 4 (`feat/behavioral`).
 | 3   | `feat/behavioral`            | Strategy, Template Method, Chain of Responsibility, Observer, State, Command                            |
 | 4   | `feat/eip-and-docs`          | Content-Based Router, Splitter + Aggregator, Publish-Subscribe; link-only rows; full README; case study |
 
-PR 4 also adds:
-
-- Link-only rows: Idempotent Receiver, Claim Check, Dead Letter Channel and Message Store, linking to C's ADRs 0003, 0008, 0006 and 0002.
-- One PoEAA row pointing to A.
-- An omitted-patterns table (Prototype, Flyweight, Iterator, Visitor, Interpreter, Mediator, Memento).
-- The "Built with Claude Code" example.
-
 ## Open decisions
 
-| Decision                                     | Options                                     | Leaning                   | Needed by |
-| -------------------------------------------- | ------------------------------------------- | ------------------------- | --------- |
-| A plain `v1.0.0` GitHub release (no package) | a) tag the finished catalog b) no tag       | Decide at PR 4            | PR 4      |
-| Publish-Subscribe subscriber's side effect   | a) a Task on the Order b) something lighter | a), once the probe passes | PR 4      |
+None. The `v1.0.0` tag (a plain GitHub release, no package) and the subscriber's Task side effect were decided at PR 4.
 
 ## Notes for the next session
 
 - Dev org: `adp-dev`, created 2026-11-18 for 30 days, with no permission sets assigned. Iterate with `sf project deploy start --source-dir force-app --target-org adp-dev`, then `npm run org:test -- adp-dev`.
-- **Probe before PR 4:** a Platform Event trigger runs as the Automated Process user. Check that it can insert a Task on an Order with no permission set. `apex-event-ingestion` proved updating Orders, but not Tasks.
+- **PR 4 probe (2026-11-18, `adp-dev`):** a Platform Event trigger runs as the Automated Process user, which, with no permission set, inserted Tasks on an Order in user mode. With no `OwnerId` it owns them; with the Order's owner as `OwnerId` the insert also worked.
 - Inner classes can call the outer class's `private` constructor (proven by the Builder deploy). Use that wherever a pattern needs a guarded constructor.
 - PR 2 findings:
   - `inner` and `outer` are reserved identifiers. The decorator field is `wrapped`.
@@ -52,3 +50,9 @@ PR 4 also adds:
   - Abstract, virtual and override methods need an explicit access modifier, even in a private inner class.
   - A test's inner class can extend a top-level abstract class and override its `protected` hooks.
 - Local gate replay: `scratchpad/ci-gate-replay.sh <alias>` repeats `ci.yml`'s test step and gate. The scratchpad may be cleared; rebuild the script from `ci.yml` if it's gone.
+- PR 4 findings:
+  - In a test, a Task on a deleted Order still inserts, even after `Database.emptyRecycleBin`. Use an Order Id that never existed to make a Task insert fail.
+  - Task DML right after a `PermissionSetAssignment` insert in the same context is `MIXED_DML_OPERATION`, even in a partial-success insert (the row just fails). Wrap it in `System.runAs(new User(Id = UserInfo.getUserId()))`.
+  - `EventBus.publish` by a user without Create on the event doesn't throw: each `SaveResult` fails. A successful Publish Immediately result also lists an `OPERATION_ENQUEUED` entry in `getErrors()`, so check `isSuccess()`.
+  - Platform Event fields need no field permissions in a permission set: a Minimum Access user with object Read and Create published both fields.
+  - An anonymous-Apex probe that ends in `throw` rolls back its Orders, but a Publish Immediately event still goes out.

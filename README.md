@@ -50,6 +50,8 @@ flowchart LR
   command -.-> ingest
   router -.-> ingest
   pubsub -.-> ingest
+  pubsub -.-> logging
+  splitter -.-> ingest
   adapter -.-> logging
 ```
 
@@ -84,9 +86,9 @@ Open a pattern's card, read "Don't use it when" first, then the code and its tes
 | behavioral | [Observer](force-app/behavioral/observer/README.md)                                  | In-transaction listeners on "order shipped"                     | Done   |
 | behavioral | [State](force-app/behavioral/state/README.md)                                        | A fulfilment lifecycle that rejects illegal transitions         | Done   |
 | behavioral | [Command](force-app/behavioral/command/README.md)                                    | Queued, undoable shipment operations                            | Done   |
-| eip        | Content-Based Router                                                                 | Tracking events routed by carrier                               | PR 4   |
-| eip        | Splitter + Aggregator                                                                | An order split per warehouse, then reassembled                  | PR 4   |
-| eip        | Publish-Subscribe Channel                                                            | `Order_Shipped_Event__e` and a trigger subscriber               | PR 4   |
+| eip        | [Content-Based Router](force-app/eip/content-based-router/README.md)                 | Tracking scans routed by carrier                                | Done   |
+| eip        | [Splitter + Aggregator](force-app/eip/splitter-aggregator/README.md)                 | An order split per warehouse, then reassembled                  | Done   |
+| eip        | [Publish-Subscribe Channel](force-app/eip/publish-subscribe/README.md)               | `Order_Shipped_Event__e` and a trigger subscriber               | Done   |
 
 ```apex
 ShipmentRequest request = ShipmentRequest.builder()
@@ -96,6 +98,30 @@ ShipmentRequest request = ShipmentRequest.builder()
   .to('SW1A 1AA')
   .build(); // throws InvalidRequestException naming every missing field
 ```
+
+### Patterns that live elsewhere in this portfolio
+
+A faithful version of these needs a custom object, files or permission sets, which would copy `apex-event-ingestion` ([ADR 0003](docs/adr/0003-cross-link-instead-of-duplicating.md)). Each row links to the production form and the decision behind it.
+
+| Family | Pattern                                                 | Where it runs                                                                                                                                                                                                                                                                                                                                                    | Decision                                                                                                               |
+| ------ | ------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| eip    | Idempotent Receiver                                     | `apex-event-ingestion`: a unique, case-sensitive key on the producer's message Id, and a partial-success insert                                                                                                                                                                                                                                                  | [ADR 0003](https://github.com/csquaredaz/apex-event-ingestion/blob/main/docs/adr/0003-producer-idempotency-key.md)     |
+| eip    | Claim Check                                             | `apex-event-ingestion`: large payloads as a producer-uploaded `ContentVersion`, with the uploader verified                                                                                                                                                                                                                                                       | [ADR 0008](https://github.com/csquaredaz/apex-event-ingestion/blob/main/docs/adr/0008-claim-check.md)                  |
+| eip    | Dead Letter Channel                                     | `apex-event-ingestion`: messages that keep failing are marked `Dead`, recovered from a Queueable Finalizer                                                                                                                                                                                                                                                       | [ADR 0006](https://github.com/csquaredaz/apex-event-ingestion/blob/main/docs/adr/0006-queueable-finalizer-recovery.md) |
+| eip    | Message Store                                           | `apex-event-ingestion`: every inbound message in `Inbound_Message__c`, with status and attempts                                                                                                                                                                                                                                                                  | [ADR 0002](https://github.com/csquaredaz/apex-event-ingestion/blob/main/docs/adr/0002-message-store.md)                |
+| PoEAA  | Unit of Work, Query Object, Service Layer, DI container | `apex-core-lib`: [`UnitOfWork`](https://github.com/csquaredaz/apex-core-lib/blob/main/force-app/data/classes/UnitOfWork.cls), [`SObjectSelector`](https://github.com/csquaredaz/apex-core-lib/blob/main/force-app/data/classes/SObjectSelector.cls), [`Application`](https://github.com/csquaredaz/apex-core-lib/blob/main/force-app/di/classes/Application.cls) | [ADR 0002](https://github.com/csquaredaz/apex-core-lib/blob/main/docs/adr/0002-lean-fflib-core.md)                     |
+
+### Deliberately left out
+
+| Pattern     | Why it isn't here                                                                                                                                                  |
+| ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Prototype   | Apex has `clone()` on SObjects and collections (`deepClone()` for lists of SObjects). A Prototype hierarchy adds nothing.                                          |
+| Flyweight   | Apex objects live for one transaction, and heap is per transaction. There's no long-lived pool of shared objects to save memory with.                              |
+| Iterator    | `Iterable<T>` and `Iterator<T>` are built into the language, and `for` loops use them. Writing one is rare: a custom `Database.Batchable` scope is the usual case. |
+| Visitor     | Double dispatch over a fixed class hierarchy rarely fits Apex code, where types are SObjects and DTOs. A `switch on` over the type is clearer at catalog size.     |
+| Interpreter | A grammar and parser are almost never the right answer on the platform. Formula fields, Flow and validation rules already give admins an expression language.      |
+| Mediator    | On Salesforce this role is played by a service layer or by Platform Events. Both are covered: see Facade and Publish-Subscribe.                                    |
+| Memento     | Saving and restoring object state is what `Database.setSavepoint()` and `rollback()` do for data. In-memory undo appears in Command instead.                       |
 
 ## Design decisions
 
@@ -119,7 +145,8 @@ CI runs every layer on each PR in a fresh scratch org, then deletes the org. The
 ## Built with Claude Code
 
 - **Standards:** this repo's [`CLAUDE.md`](CLAUDE.md) and the [`apex-standards`](https://github.com/csquaredaz/claude-code-salesforce-skills) plugin (`apex-fflib-layers`, `apex-security`, `apex-testing`, `apex-code-review`). The repo was scaffolded from the plugin's `sf-repo-scaffold` template.
-- **One concrete example:** written once the catalog is complete.
+- **One concrete example:** Claude Code drafted the configuration-driven Factory, and its own review against `apex-code-review` caught a real defect before the PR opened. `CarrierClientFactory` called `Type.newInstance()` before checking that the class implemented `ICarrierClient`, so a Custom Metadata row naming the wrong class would run that class's constructor (and any side effects in it) before failing. The fix checks `ICarrierClient.class.isAssignableFrom(type)` first, a test proves a row naming the wrong class fails with a message that names the carrier and the class, and the factory card explains the ordering. Later, the Publish-Subscribe tests caught Claude's own assumption that a Task on a deleted Order would fail to insert: it doesn't, so the test and card now use an Order Id that never existed.
+- **Platform claims are probed, not assumed:** before the Publish-Subscribe subscriber was written, a probe in a scratch org proved that the Automated Process user can insert Tasks on Orders in user mode with no permission set. The card cites it.
 - **How AI work is reviewed:** every AI-assisted commit carries a `Co-Authored-By: Claude` trailer, goes through a PR with CI, and is reviewed against the same standards.
 
 ## License
