@@ -1,0 +1,9 @@
+# Files the Salesforce CLI never deploys or retrieves
+**/jsconfig.json
+**/.eslintrc.json
+**/__tests__/**
+**/*.test.js
+package.xml
+
+# Pattern cards live beside their code; they are documentation, not metadata.
+**/README.md
