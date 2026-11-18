@@ -1,6 +1,6 @@
 # Handoff: apex-design-patterns
 
-Last updated: 2026-11-18 · Phase: PR 3 of 4 (`feat/behavioral`).
+Last updated: 2026-11-18 · Phase: PR 4 of 4 (`feat/eip-and-docs`), not started.
 
 ## Done
 
@@ -13,8 +13,14 @@ Last updated: 2026-11-18 · Phase: PR 3 of 4 (`feat/behavioral`).
 - Builder (`ShipmentRequest` with an inner `Builder`) is the reference card. It's in PR 1 so CI deploys real metadata and proves the test path from the first PR.
 - **PR #1 merged 2026-11-18 as `b54dccf`.** Ready run 44349240178: `SKIP_PERMSETS` path, 6/6 `ShipmentRequestTest`, 100% own-class coverage, org deleted, artifact scrubbed. The `main` run 44350110331 reused it (scratch-org job skipped) and published the 100% badge.
 - **PR #2 merged 2026-11-18 as `010707b`:** Factory, Singleton, Adapter, Decorator, Composite, Facade. Ready run 44353254138: 35/35 from 7 test classes, 100%. The `main` run 44354403374 reused it.
+- **PR #3 merged 2026-11-18 as `65a96e9`:** Strategy, Template Method, Chain of Responsibility, Observer, State, Command. Ready run 44357229796: 67/67 from 13 test classes, 100%. The `main` run 44357988813 reused it. Renamed for reserved words: `andThen`, `render`, `bestQuote`.
 
 ## Next
+
+PR 4 first steps:
+
+1. Probe in `adp-dev`: a Platform Event trigger runs as the Automated Process user. Can it insert a Task on an Order with no permission set?
+2. Show Chad the public signatures for Content-Based Router, Splitter + Aggregator and Publish-Subscribe, with the design calls and the `v1.0.0` tag decision, and wait for his OK before writing tests.
 
 | PR  | Branch                       | Contents                                                                                                |
 | --- | ---------------------------- | ------------------------------------------------------------------------------------------------------- |
