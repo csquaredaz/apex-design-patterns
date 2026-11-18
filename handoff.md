@@ -1,6 +1,6 @@
 # Handoff: apex-design-patterns
 
-Last updated: 2026-11-18 · Phase: PR 2 of 4 (`feat/creational-structural`).
+Last updated: 2026-11-18 · Phase: PR 3 of 4 (`feat/behavioral`).
 
 ## Done
 
@@ -12,6 +12,7 @@ Last updated: 2026-11-18 · Phase: PR 2 of 4 (`feat/creational-structural`).
 - Repository scaffolded by hand from `apex-standards:sf-repo-scaffold` at E `6202ac1`, which includes E PR #11's `SKIP_PERMSETS` back-port. The skill is user-invoked only. Step 8 applied: no `release.yml`, no `changelog-section.sh`, no package keys.
 - Builder (`ShipmentRequest` with an inner `Builder`) is the reference card. It's in PR 1 so CI deploys real metadata and proves the test path from the first PR.
 - **PR #1 merged 2026-11-18 as `b54dccf`.** Ready run 44349240178: `SKIP_PERMSETS` path, 6/6 `ShipmentRequestTest`, 100% own-class coverage, org deleted, artifact scrubbed. The `main` run 44350110331 reused it (scratch-org job skipped) and published the 100% badge.
+- **PR #2 merged 2026-11-18 as `010707b`:** Factory, Singleton, Adapter, Decorator, Composite, Facade. Ready run 44353254138: 35/35 from 7 test classes, 100%. The `main` run 44354403374 reused it.
 
 ## Next
 
