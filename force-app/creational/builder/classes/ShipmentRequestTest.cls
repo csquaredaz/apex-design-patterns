@@ -48,7 +48,9 @@ private class ShipmentRequestTest {
       complete().weighing(0),
       complete().weighing(-5),
       complete().declaringValue(-0.01),
-      complete().withServiceLevel(' ')
+      complete().withServiceLevel(' '),
+      complete().withCarrier(null),
+      complete().to(null)
     };
     Integer rejected = 0;
     for (ShipmentRequest.Builder candidate : invalid) {

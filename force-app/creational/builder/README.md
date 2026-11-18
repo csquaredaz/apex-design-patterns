@@ -72,11 +72,11 @@ Code: [`ShipmentRequest.cls`](classes/ShipmentRequest.cls) · Tests: [`ShipmentR
 
 ## What the tests prove
 
-| Test                                                    | Proves                                                                 |
-| ------------------------------------------------------- | ---------------------------------------------------------------------- |
-| `build_allRequiredFields_appliesDefaultsAndNormalises`  | The defaults apply, and the carrier and postal code are normalised     |
-| `build_optionalFields_overridesDefaults`                | Each optional step overrides its default                               |
-| `build_emptyBuilder_listsEveryMissingField`             | One exception names every missing field                                |
-| `build_outOfRangeValues_rejected`                       | A zero or negative weight, a negative value and a blank level all fail |
-| `build_builderReusedAfterBuild_earlierRequestUnchanged` | Built requests are immutable, even when the builder is reused          |
-| `build_twoHundredRequests_eachIndependent`              | One builder in a 200-row loop gives 200 independent values             |
+| Test                                                    | Proves                                                                                                                          |
+| ------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| `build_allRequiredFields_appliesDefaultsAndNormalises`  | The defaults apply, and the carrier and postal code are normalised                                                              |
+| `build_optionalFields_overridesDefaults`                | Each optional step overrides its default                                                                                        |
+| `build_emptyBuilder_listsEveryMissingField`             | One exception names every missing field                                                                                         |
+| `build_outOfRangeValues_rejected`                       | A zero or negative weight, a negative value, a blank level, or a null carrier or postal code fails without a null-pointer error |
+| `build_builderReusedAfterBuild_earlierRequestUnchanged` | Built requests are immutable, even when the builder is reused                                                                   |
+| `build_twoHundredRequests_eachIndependent`              | One builder in a 200-row loop gives 200 independent values                                                                      |
