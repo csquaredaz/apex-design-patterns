@@ -1,6 +1,6 @@
 # Handoff: apex-design-patterns
 
-Last updated: 2026-11-18 · Phase: PR 4 of 4 (`feat/eip-and-docs`) in review. After it merges: tag `v1.0.0`, then go public.
+Last updated: 2026-11-18 · Phase: **done and public.** Built, released (`v1.0.0`) and public on 2026-11-18.
 
 ## Done
 
@@ -14,15 +14,24 @@ Last updated: 2026-11-18 · Phase: PR 4 of 4 (`feat/eip-and-docs`) in review. Af
 - **PR #1 merged 2026-11-18 as `b54dccf`.** Ready run 44349240178: `SKIP_PERMSETS` path, 6/6 `ShipmentRequestTest`, 100% own-class coverage, org deleted, artifact scrubbed. The `main` run 44350110331 reused it (scratch-org job skipped) and published the 100% badge.
 - **PR #2 merged 2026-11-18 as `010707b`:** Factory, Singleton, Adapter, Decorator, Composite, Facade. Ready run 44353254138: 35/35 from 7 test classes, 100%. The `main` run 44354403374 reused it.
 - **PR #3 merged 2026-11-18 as `65a96e9`:** Strategy, Template Method, Chain of Responsibility, Observer, State, Command. Ready run 44357229796: 67/67 from 13 test classes, 100%. The `main` run 44357988813 reused it. Renamed for reserved words: `andThen`, `render`, `bestQuote`.
-- **PR 4 `feat/eip-and-docs`:** Content-Based Router, Splitter + Aggregator, Publish-Subscribe, with cards; README link-only rows, PoEAA row and omitted-patterns table; "Built with Claude Code" example; `docs/case-study.md`; CHANGELOG `## 1.0.0`. Local gate replay in `adp-dev`: 86/86 from 17 test classes, 100% on 49 own classes. Code Analyzer 0 High, 0 Moderate. Five targeted mutants all killed. Chad approved every design call (R1–R2, S1–S4, P1–P4, the tag). One change from the approved signatures: `OrderShippedSubscriber.handle` returns the number of Tasks written.
+- **PR #4 merged 2026-11-18 as `c4f78ab`:** ready run 44362368929 (86/86 from 17 test classes, 100%); the `main` run 44363240923 reused it and published the 100% badge.
+- **`v1.0.0` released 2026-11-18:** an annotated tag on `c4f78ab` and a plain GitHub release, with the CHANGELOG `## 1.0.0` section plus a source-only line as notes. No workflow runs on tags.
+- **PR 4 `feat/eip-and-docs` contents:** Content-Based Router, Splitter + Aggregator, Publish-Subscribe, with cards; README link-only rows, PoEAA row and omitted-patterns table; "Built with Claude Code" example; `docs/case-study.md`; CHANGELOG `## 1.0.0`. Local gate replay in `adp-dev`: 86/86 from 17 test classes, 100% on 49 own classes. Code Analyzer 0 High, 0 Moderate. Five targeted mutants all killed. Chad approved every design call (R1–R2, S1–S4, P1–P4, the tag). One change from the approved signatures: `OrderShippedSubscriber.handle` returns the number of Tasks written.
+
+- **Public 2026-11-18.** The pre-flip scan was clean, so no fix PR was needed and no runs were deleted:
+  - All 12 CI runs' logs: no `00D`/`005` Ids, no instance hosts and no usernames. The redact filter's masks appear where expected (`<org-id>`, `<username>`, `<instance-url>`, `***`). The only email is npm's public `glob` author address; the only hosts are `developer.salesforce.com` and `login.salesforce.com`.
+  - All 16 artifacts: no `orgId`, `username`, `userId` or `hostname`. The `01p`, `707` and `0Af` record Ids from the deleted scratch orgs remain; they don't identify an org (A, B and C are the same).
+  - 4 PRs (0 comments or reviews), 30 commits on all refs (noreply identities only), the `v1.0.0` notes and the tree on every ref: clean, with no employer or client names. gitleaks 8.30.1 found no leaks in the history or the tree.
+  - After Chad flipped visibility: the README renders anonymously; the CI, coverage (100%), API and license badges resolve; all 28 cross-links to A, B and C return 200, and no relative link is broken.
+  - Known: the `apex-standards` link to `claude-code-salesforce-skills` (E) returns 404 until E goes public at roadmap step 6. A, B and C link to it the same way.
 
 ## Next
 
-1. Chad merges PR 4 in the GitHub UI; confirm the `main` run reuses the PR's scratch-org result.
-2. **Tag `v1.0.0`** on `main` and create a plain GitHub release with the CHANGELOG `## 1.0.0` section as notes (source-only, no package). Chad OKs the exact `git tag` / `gh release create` commands first.
-3. **Go public** with the approved gated sequence: fix any leak sources first, delete old CI runs, scan the remaining logs and PR text, then Chad flips visibility.
+Nothing for D. The roadmap moves to step 5, `agentforce-action-pack` (F).
 
-All four PRs of the plan are done once PR 4 merges:
+The remote branches `chore/scaffold`, `feat/creational-structural`, `feat/behavioral` and `feat/eip-and-docs` are merged; delete them only when Chad asks, after a merge-base check. Keep `badges`: the coverage badge reads `coverage.json` from it.
+
+All four PRs of the plan are merged:
 
 | PR  | Branch                       | Contents                                                                                                |
 | --- | ---------------------------- | ------------------------------------------------------------------------------------------------------- |
