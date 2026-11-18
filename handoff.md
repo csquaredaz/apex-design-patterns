@@ -1,6 +1,6 @@
 # Handoff: apex-design-patterns
 
-Last updated: 2026-11-18 · Phase: built and released (`v1.0.0`). Only going public is left.
+Last updated: 2026-11-18 · Phase: **done and public.** Built, released (`v1.0.0`) and public on 2026-11-18.
 
 ## Done
 
@@ -18,16 +18,18 @@ Last updated: 2026-11-18 · Phase: built and released (`v1.0.0`). Only going pub
 - **`v1.0.0` released 2026-11-18:** an annotated tag on `c4f78ab` and a plain GitHub release, with the CHANGELOG `## 1.0.0` section plus a source-only line as notes. No workflow runs on tags.
 - **PR 4 `feat/eip-and-docs` contents:** Content-Based Router, Splitter + Aggregator, Publish-Subscribe, with cards; README link-only rows, PoEAA row and omitted-patterns table; "Built with Claude Code" example; `docs/case-study.md`; CHANGELOG `## 1.0.0`. Local gate replay in `adp-dev`: 86/86 from 17 test classes, 100% on 49 own classes. Code Analyzer 0 High, 0 Moderate. Five targeted mutants all killed. Chad approved every design call (R1–R2, S1–S4, P1–P4, the tag). One change from the approved signatures: `OrderShippedSubscriber.handle` returns the number of Tasks written.
 
+- **Public 2026-11-18.** The pre-flip scan was clean, so no fix PR was needed and no runs were deleted:
+  - All 12 CI runs' logs: no `00D`/`005` Ids, no instance hosts and no usernames. The redact filter's masks appear where expected (`<org-id>`, `<username>`, `<instance-url>`, `***`). The only email is npm's public `glob` author address; the only hosts are `developer.salesforce.com` and `login.salesforce.com`.
+  - All 16 artifacts: no `orgId`, `username`, `userId` or `hostname`. The `01p`, `707` and `0Af` record Ids from the deleted scratch orgs remain; they don't identify an org (A, B and C are the same).
+  - 4 PRs (0 comments or reviews), 30 commits on all refs (noreply identities only), the `v1.0.0` notes and the tree on every ref: clean, with no employer or client names. gitleaks 8.30.1 found no leaks in the history or the tree.
+  - After Chad flipped visibility: the README renders anonymously; the CI, coverage (100%), API and license badges resolve; all 28 cross-links to A, B and C return 200, and no relative link is broken.
+  - Known: the `apex-standards` link to `claude-code-salesforce-skills` (E) returns 404 until E goes public at roadmap step 6. A, B and C link to it the same way.
+
 ## Next
 
-**Go public** with the approved gated sequence:
+Nothing for D. The roadmap moves to step 5, `agentforce-action-pack` (F).
 
-1. Scan every CI run's logs and artifacts, the PR titles, bodies and comments, commit messages, the release notes and the tree for org Ids, usernames, instance URLs, non-noreply emails and employer or client names.
-2. If anything leaks, fix the source in a PR first, then delete the affected runs once Chad OKs it.
-3. Chad flips visibility. Then check the public README, the badges and the cross-links to A, B and C.
-4. Open this branch (`docs/handoff-public`) as a small docs PR, extended with the going-public result, and update the workspace CLAUDE.md and memory.
-
-The remote branch `feat/eip-and-docs` is merged; delete it only when Chad asks.
+The remote branches `chore/scaffold`, `feat/creational-structural`, `feat/behavioral` and `feat/eip-and-docs` are merged; delete them only when Chad asks, after a merge-base check. Keep `badges`: the coverage badge reads `coverage.json` from it.
 
 All four PRs of the plan are merged:
 
